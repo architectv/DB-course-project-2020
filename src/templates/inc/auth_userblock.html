@@ -1,0 +1,35 @@
+{% load static %}
+
+{% if request.user.is_authenticated %}
+    {% if request.user.avatar %}
+        <div class="col-md-3 image-wrap">
+            <img src="{{ request.user.avatar.url }}" class="rounded-circle float-right m-2 p-0 img-fluid" alt="avatar">
+        </div>
+    {% else %}
+        <div class="col-md-3 image-wrap">
+            <img src="{% static '/img/dao.jpg' %}" class="rounded-circle float-right m-2 p-0 img-fluid" alt="avatar">
+        </div>
+    {% endif %}
+
+    <p class="lead">
+        <ul class="list-inline">
+            <li>{{ request.user.username }}</li>
+            <li class="list-inline-item"><a href={% url 'edit' %}><strong>Настройки</strong></a></li>
+            <li class="list-inline-item"><a href={% url 'logout' %}><strong>Выход</strong></a></li>
+        </ul>
+    </p>
+{% else %}
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href={% url 'login' %}>
+        <button type="button" class="btn btn-outline-primary mt-4">
+                Войти
+        </button>
+        </a></li>
+
+        <li class="list-inline-item"><a href={% url 'register' %}>
+        <button type="button" class="btn btn-outline-primary text-light bg-primary mt-4">
+                Зарегистрироваться
+        </button>
+        </a></li>
+    </ul>
+{% endif %}

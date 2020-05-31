@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<a href={% url 'show_project' task.project.id %}>
+    <h2>{{ task.project.title }}</h2>
+</a>
+
+<h2>Задача</h2>
+
+<div class="border border-dark rounded mt-4 shadow">
+    <div class="media">
+        <div class="media-body m-3">
+                <h4 class="my-2">
+                    {{ task.title }}
+                    <a href={% url 'inbox_filter' task.status %}>
+                    {% if task.status == 'todo' %}
+                    <span class="badge badge-warning">
+                    {% elif task.status == 'doing' %}
+                    <span class="badge badge-info">
+                    {% elif task.status == 'done' %}
+                    <span class="badge badge-success">
+                    {% else %}
+                    <span class="badge badge-secondary">
+                    {% endif %}
+                        {{ task.status }}
+                    </span></a>
+                </h4>
+            <a class="mt-4">
+                <h6>{{ task.description }}</h6>
+            </a>
+            <a class="mt-4">
+                <!-- <h7>Создатель: {{ task.author }}</h7> -->
+                <h7>Создатель:</h7>
+                <li class="list-inline-item mr-1"> 
+                    <div class="image-wrap"><img src=
+                    {% if task.author.avatar %}
+                            "{{ task.author.avatar.url }}"
+                    {% else %}
+                            "{% static '/img/dao.jpg' %}"
+                    {% endif %}
+                    style="width:30px;height:30px;" class="rounded-circle img-fluid" alt="avatar">
+                    </div>
+                </li>
+
+                <li class="list-inline-item ml-0 mr-3">
+                    <label>{{ task.author.username }}</label>
+                </li>
+            </a>
+            <br>
+            <a class="mt-4">
+                <!-- <h7>Исполнитель: {{ task.performer }}</h7> -->
+                <h7>Исполнитель:</h7>
+                <li class="list-inline-item mr-1"> 
+                    <div class="image-wrap"><img src=
+                    {% if task.performer.avatar %}
+                            "{{ task.performer.avatar.url }}"
+                    {% else %}
+                            "{% static '/img/dao.jpg' %}"
+                    {% endif %}
+                    style="width:30px;height:30px;" class="rounded-circle img-fluid" alt="avatar">
+                    </div>
+                </li>
+
+                <li class="list-inline-item ml-0 mr-3">
+                    <label>{{ task.performer.username }}</label>
+                </li>
+            </a>
+            <br>
+            <a class="mt-4">
+                <h7>Дата назначения: {{ task.date }}</h7>
+            </a>
+            {% if task.upto %}
+            <br>
+            <a class="mt-4">
+                <h7>Срок: {{ task.upto }}
+                    <span class="badge badge-pill badge-{{ info.state }}">
+                        {{ info.text }}
+                    </span>
+                </h7>
+            </a>
+            {% endif %}
+
+            {% if tags %}
+            <br>
+            <ul class="list-inline ml-0 pt-2">
+            <a class="mt-4">
+                <h7>Теги:
+                    {% for tag in tags %}
+                    <li class="list-inline-item mr-1">
+                        <a href={% url 'tasks_by_tag' tag.id %}>{{ tag.name }}</a>
+                    </li>
+                    {% endfor %}
+                </h7>
+            </a>
+            </ul>
+            {% endif %}
+
+            <!-- <br> -->
+
+            {% if request.user == task.performer %}
+
+            <form method="post" action="{% url 'update_task' task.id %}" class="post-form mt-3">
+                {% csrf_token %}
+            
+                {% for radio in form.status %}
+                <div class="myradio">
+                    {{ radio }}
+                </div>
+                {% endfor %}
+
+                <input name="tags" class="form-control" type="text" style="width: 340px;" placeholder="Добавьте теги через пробел">
+            
+                <!-- <a href="{% url 'update_task' task.id %}"> -->
+                    <button type="submit" class="btn btn-outline-primary mt-3">
+                    Обновить
+                </button>
+            <!-- </a> -->
+            </form>
+
+            {% endif %}
+    </div>
+
+    {% if request.user == task.author %}
+    <a href={% url 'edit_task' task.id %}>
+        {% include '../inc/gear.html' %}
+    </a>
+    {% endif %}
+</div>
+
+{% endblock content %}

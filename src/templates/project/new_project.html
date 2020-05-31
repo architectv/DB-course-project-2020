@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Создание проекта</h2>
+
+<form method="post" class="post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="row form-row spacer p-2 m-2 text-center">
+        <div class="col-2 pt-2">
+            <label>{{ form.username.label }}:</label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                {{ form.username }}
+                <div class="input-group-append">
+                    <button class="btn btn-success add-form-row">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+{% endblock content %}
+
+{% block custom_js %}
+    {% include '../inc/dynamic.html' %}
+{% endblock %}

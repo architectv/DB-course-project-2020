@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if tasks|length == 0 %}
+    <h4 class="mt-5">Нет назначенных задач</h4>
+{% else %}
+    {% if info %}
+        <h2>Статус: {{ info }} ({{ tasks|length }})</h2>
+    {% endif %}
+    {% for task in tasks %}
+        {% include '../inc/task_preview.html' %}
+    {% endfor %}
+    {% include "../inc/pagination.html" with page=tasks %}
+{% endif %}
+
+{% endblock content %}

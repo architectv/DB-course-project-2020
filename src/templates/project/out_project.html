@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="border rounded mt-4 shadow">
+    <div class="media">
+        <div class="media-body m-3">
+            <h4 class="my-2"><a href={% url 'show_project' project.id %}>{{ project.title }}</a></h4>
+            <ul class="list-inline ml-0 pt-3">
+                <p>Вы действительно хотите покинуть проект?</p>
+                <li class="list-inline-item ml-0">
+                    <form method="post">
+                        {% csrf_token %}
+
+                    <a href={% url 'out_project' project.id %}>
+                        <button type="submit" class="btn btn-danger ml-3">
+                            Покинуть
+                        </button>
+                    </a>
+
+                    </form></li>
+
+                    <li class="list-inline-item ml-0 mr-3">
+                    <form action="{% url 'show_project' project.id %}" method="get">
+                        <button type="submit" class="btn btn-outline-primary">
+                            Остаться и вернуться к проекту
+                        </button>
+
+                </form></li>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

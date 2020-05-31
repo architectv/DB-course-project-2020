@@ -1,0 +1,26 @@
+{% extends '../base.html' %} 
+ 
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <a href={% url 'create_project' %}>
+    <button type="button" class="btn btn-outline-primary mt-4">
+            Создать проект!
+    </button>
+    </a>
+
+    {% if projects|length == 0 %}
+        <h4 class="mt-5">Пока нет ни одного проекта</h4>
+    {% else %}
+        {% for project in projects %}
+            {% include '../inc/project_preview.html' %}
+        {% endfor %}
+        {% include "../inc/pagination.html" with page=projects %}
+    {% endif %}
+{% else %}
+    <h1 class="m-5 p-2 bg-info text-light text-center rounded">
+        Выполняйте задачи эффективно с Дао!
+    </h1>
+{% endif %}
+
+{% endblock content %}

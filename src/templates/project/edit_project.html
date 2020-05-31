@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Редактирование проекта <a href={% url 'show_project' project.id %}>{{project.title}}</a></h2>
+
+    {% include '../inc/project_form.html' %}
+
+
+    <form action={% url 'delete_project' project.id %} method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-4">
+            Удалить проект
+        </button>
+    </form>
+
+{% endblock content %}
+
+{% block custom_js %}
+    {% include '../inc/dynamic.html' %}
+{% endblock %}

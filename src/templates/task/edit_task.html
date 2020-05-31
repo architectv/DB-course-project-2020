@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Редактирование задачи <a href={% url 'show_task' task.id %}>{{task.title}}</a></h2>
+<h2>из проекта <a href={% url 'show_project' project.id %}>{{project.title}}</a></h2>
+
+<form method="post" class="post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+
+<form action={% url 'delete_task' task.id %} method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger mt-4">
+        Удалить задачу
+    </button>
+</form>
+
+{% endblock content %}

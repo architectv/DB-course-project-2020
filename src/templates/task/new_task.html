@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href={% url 'show_project' project.id %}>
+<h2>{{ project.title }}</h2>
+</a>
+
+<h2>Новая задача</h2>
+
+<form method="post" class="post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,22 @@
+<form method="post" class="post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {{ new_formset.management_form }}
+    {% for form in new_formset %}
+    <div class="row form-row spacer p-2 m-2 text-center">
+        <div class="col-2 pt-2">
+            <label>{{form.username.label}}:</label>
+        </div>
+        <div class="col-4">
+            <div class="input-group" name="new_formset">
+                {{form.username}}
+                <div class="input-group-append">
+                    <button class="btn btn-success add-form-row">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

@@ -1,0 +1,61 @@
+ {% load static %}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <div class="col-1 mt-2 mr-5 text-center">
+        <ul class="list-inline">
+            <li>
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <h1>Дао</h1>
+                </a>
+            </li>
+            <li>
+                <i>Менеджер задач</i>
+            </li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse">
+        {% if request.user.is_authenticated %}
+        <ul class="navbar-nav mr-auto">
+            {% if 'inbox' not in request.path %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link" href={% url 'index' %}>
+                    <h2>Проекты</h2>
+                </a>
+            </li>
+            
+            {% if 'inbox' in request.path %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link ml-4" href={% url 'inbox' %}>
+                    <h2>Входящие</h2>
+                </a>
+            </li>
+
+            <li class="nav-item ml-4 mt-3">
+            <form action="{% url 'search' %}" class="form-inline mr-4" method="get">
+                <input name="search" class="form-control" type="text" style="width: 340px;" placeholder="Поиск проектов и задач по названию">
+                <button type="submit" class="btn btn-primary ml-4">Найти</button>
+            </form>
+            </li>
+
+            <!-- <li class="nav-item ml-4 mt-3">
+                <form action={% url 'search' %} class="form-inline mr-4" method="get" class="get-form">
+                    {% csrf_token %}
+                    {{ query }}
+                    <button type="submit" class="btn btn-primary ml-4">Найти</button>
+                </form>
+            </li> -->
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-3 form-inline">
+        {% include 'inc/auth_userblock.html' %}
+    </div>
+</nav>

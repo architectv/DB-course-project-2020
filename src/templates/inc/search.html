@@ -1,0 +1,25 @@
+{% extends '../base.html' %} 
+ 
+{% block content %}
+
+<h2>Поиск: '{{ info }}'</h2>
+
+{% if projects|length == 0 %}
+    <h4 class="mt-5">Нет таких проектов</h4>
+{% else %}
+    <h4 class="mt-5">Проекты ({{ projects.count }})</h4>
+    {% for project in projects %}
+        {% include 'inc/project_preview.html' %}
+    {% endfor %}
+{% endif %}
+
+{% if tasks|length == 0 %}
+    <h4 class="mt-5">Нет таких задач</h4>
+{% else %}
+    <h4 class="mt-5">Задачи ({{ tasks.count }})</h4>
+    {% for task in tasks %}
+        {% include 'inc/task_preview.html' %}
+    {% endfor %}
+{% endif %}
+
+{% endblock content %}

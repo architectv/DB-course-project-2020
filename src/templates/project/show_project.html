@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="border rounded mt-4 shadow"><div class="media">
+    <div class="media-body m-3">
+        <h4 class="my-2"><a href={% url 'show_project' project.id %}>{{ project.title }}</a></h4>
+        <a class="mt-4">
+            <h6>{{ project.description }}</h6>
+        </a>
+        <ul class="list-inline ml-0 pt-3">
+            <label class="mr-3">Участники:</label>
+            {% for member in project.members.all %}
+                <li class="list-inline-item mr-1">  
+                    <div class="image-wrap"><img src=
+                    {% if member.avatar %}
+                            "{{ member.avatar.url }}"
+                    {% else %}
+                            "{% static '/img/dao.jpg' %}"
+                    {% endif %}
+                    style="width:30px;height:30px;"
+                    class="rounded-circle img-fluid" alt="avatar">
+                    </div>
+                </li>
+                <li class="list-inline-item ml-0 mr-3">
+                    <label>
+                        {% if request.user == project.author %}
+                        <a href="{% url 'delete_member' project.id member.id %}">
+                        {% else %}
+                        <a href="{% url 'show_project' project.id %}">
+                        {% endif %}
+                            {{ member.username }}
+                        </a>
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <a class="mt-4">
+            <h7>Создатель: {{ project.author }}</h7>
+        </a>
+        <br>
+        <a class="mt-4">
+            <h7>Количество задач: {{ project.tasks_number }}</h7>
+        </a>
+        <br>
+        <a class="mt-4">
+            <h7>Начало проекта: {{ project.date }}</h7>
+        </a>
+    </div>
+
+    {% if request.user == project.author %}
+    <a href={% url 'edit_project' project.id %}>
+        {% include '../inc/gear.html' %}
+    </a>
+    {% else %}
+    <a href={% url 'out_project' project.id %}>
+        <button type="button" class="btn btn-outline-danger m-3 p-2">
+            Покинуть проект
+        </button>
+    </a>
+    {% endif %}
+</div></div>
+
+<h2 class="mt-5">
+    Задачи
+    <a href={% url 'create_task' project.id %}>
+        <button type="button" class="btn btn-outline-primary ml-3">
+            Добавить задачу!
+        </button>
+    </a>
+</h2>
+
+{% if tasks|length == 0 %}
+    <h4 class="mt-5">Пока нет ни одной задачи</h4>
+{% else %}
+    {% if info %}
+        <h2>Статус: {{ info }} ({{ tasks|length }})</h2>
+    {% endif %}
+    {% if tag %}
+        <h2>Тег: {{ tag }} ({{ tasks|length }})</h2>
+    {% endif %}
+    {% for task in tasks %}
+        {% include '../inc/task_preview.html' %}
+    {% endfor %}
+    {% include "../inc/pagination.html" with page=tasks %}
+{% endif %}
+
+{% endblock content %}
