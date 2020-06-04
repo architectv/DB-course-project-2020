@@ -132,11 +132,13 @@ class InboxStatusView(ListView):
     def dispatch(self, request, status, *args, **kwargs):
         # tasks = Task.objects.filter(performer=request.user, status=status)
         tasks = Task.own.assigned(performer=request.user).filter(status=status)
+        cnt = tasks.count()
         tasks, _ = PaginationView.paginate(self.request, tasks)
 
         return render(request, 'task/inbox.html', {
             'tasks': tasks,
             'info': status,
+            'cnt': cnt,
         })
 
 
@@ -146,10 +148,12 @@ class InboxTagView(ListView):
         tag = Tag.objects.get(id=tag_id)
         # tasks = Task.objects.filter(performer=request.user, tags=tag)
         tasks = Task.own.assigned(performer=request.user).filter(tags=tag)
+        cnt = tasks.count()
         tasks, _ = PaginationView.paginate(self.request, tasks)
         
         return render(request, 'task/inbox.html', {
             'tasks': tasks,
-            'info': tag,
+            'tag': tag,
+            'cnt': cnt,
         })
     

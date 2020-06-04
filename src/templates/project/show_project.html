@@ -76,10 +76,12 @@
     <h4 class="mt-5">Пока нет ни одной задачи</h4>
 {% else %}
     {% if info %}
-        <h2>Статус: {{ info }} ({{ tasks|length }})</h2>
+        <!-- <h2>Статус: {{ info }} ({{ tasks|length }})</h2> -->
+        <h2>Статус: {{ info }} ({{ cnt }})</h2>
     {% endif %}
     {% if tag %}
-        <h2>Тег: {{ tag }} ({{ tasks|length }})</h2>
+        <!-- <h2>Тег: {{ tag }} ({{ tasks|length }})</h2> -->
+        <h2>Тег: {{ tag }} ({{ cnt }})</h2>
     {% endif %}
     {% for task in tasks %}
         {% include '../inc/task_preview.html' %}

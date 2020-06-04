@@ -20,7 +20,8 @@ class SearchListView(ListView):
         ).filter(similarity__gt=0.3).order_by('-similarity')
 
         tasks = Task.objects.filter(
-            Q(performer=request.user) | Q(author=request.user)
+            # Q(performer=request.user) | Q(author=request.user)
+            performer=request.user
         ).annotate(
             similarity=TrigramSimilarity('title', query),
         ).filter(similarity__gt=0.3).order_by('-similarity')

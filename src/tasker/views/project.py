@@ -177,12 +177,14 @@ class ProjectStatusView(ListView):
     def dispatch(self, request, project_id, status, *args, **kwargs):
         project = Project.objects.get(id=project_id)
         tasks = Task.objects.filter(project__id=project_id, status=status)
+        cnt = tasks.count()
         tasks, _ = PaginationView.paginate(self.request, tasks)
 
         return render(request, 'project/show_project.html', {
             'project': project,
             'tasks': tasks,
             'info': status,
+            'cnt': cnt,
         })
 
 
@@ -192,10 +194,12 @@ class ProjectTagView(ListView):
         project = Project.objects.get(id=project_id)
         tag = Tag.objects.get(id=tag_id)
         tasks = Task.objects.filter(project=project, tags=tag)
+        cnt = tasks.count()
         tasks, _ = PaginationView.paginate(self.request, tasks)
 
         return render(request, 'project/show_project.html', {
             'project': project,
             'tasks': tasks,
             'tag': tag,
+            'cnt': cnt,            
         })
